@@ -33,7 +33,10 @@ class ViddlerVideo extends ViddlerBase {
   // Assigns attributes from XML
   public function parseXml($xml) {
     // TODO: Fill in comments, permission, etc.
-    foreach($xml['video'] as $key => $value) {
+    if(isset($xml['video'])) $video = $xml['video'];
+    else $video = $xml;
+    
+    foreach($video as $key => $value) {
       if(!is_array($value) && in_array($key, ViddlerVideo::$attributes)) {
         $this->{$key} = $value;
       }
