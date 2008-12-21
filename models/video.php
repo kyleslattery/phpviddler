@@ -7,7 +7,13 @@ class ViddlerVideo extends ViddlerBase {
       $description, $view_count, $upload_time, $comment_count,
       $tags, $url, $thumbnail_url, $permalink, $update_time,
       $permissions, $comments;
-      
+  
+  /**************
+   DATA FUNCTIONS
+   **************/
+   
+  // Find a video given an id
+  // returns ViddlerVideo object
   public static function find($id) {
     $video = new ViddlerVideo();
     $video->id = $id;
@@ -15,6 +21,7 @@ class ViddlerVideo extends ViddlerBase {
     return $video;
   }
   
+  // Update attributes using $this->id
   public function update() {
     if($this->id) {
       $xml = $this->api->video_details($this->id);
@@ -22,6 +29,7 @@ class ViddlerVideo extends ViddlerBase {
     }
   }
   
+  // Assigns attributes from XML
   public function parseXml($xml) {
     // TODO: Fill in comments, permission, etc.
     foreach($xml['video'] as $key => $value) {
