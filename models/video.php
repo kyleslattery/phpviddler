@@ -94,7 +94,8 @@ class ViddlerVideo extends ViddlerBase {
    
   public function embed($options=array()) {
     $default_options = array(
-        'type'   => 'player'
+        'type'   => 'player',
+        'html_id'     => 'viddler_' . $this->id
       );
     
     $o = array_merge($default_options, $options);
@@ -112,6 +113,17 @@ class ViddlerVideo extends ViddlerBase {
       $size_array = $this->autoSize($o['width'], $o['type'], 'width');
       $o['height'] = $size_array['height'];
     }
+    
+    $code = <<<EOC
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="{$o['width']}" height="{$o['height']}" id="{$o['html_id']}">
+  <param name="movie" value="http://www.viddler.com/{$o['type']}/{$this->id}/" />
+  <param name="allowScriptAccess" value="always" />
+  <param name="allowFullScreen" value="true" />
+  <embed src="http://www.viddler.com/{$o['type']}/{$this->id}/" width="{$o['width']}" height="{$o['height']}" type="application/x-shockwave-flash" allowScriptAccess="always" allowFullScreen="true" name="{$o['html_id']}"></embed>
+</object>
+EOC;
+
+    return $code;
   }
   
   // axis is the defined axis
