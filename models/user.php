@@ -13,6 +13,7 @@ class ViddlerUser extends ViddlerBase {
     foreach($xml['video_list']['video'] as $vid) {
       $v = new ViddlerVideo();
       $v->parseXml($vid);
+      $v->sessionid = $this->sessionid;
       $videos[] = $v;
     }
     

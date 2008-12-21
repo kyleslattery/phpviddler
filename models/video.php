@@ -22,6 +22,14 @@ class ViddlerVideo extends ViddlerBase {
     return $video;
   }
   
+  public static function findByUser($username, $sessionid=false) {
+    $user = new ViddlerUser();
+    $user->username = $username;
+    $user->sessionid = $sessionid;
+    
+    return $user->videos();
+  }
+  
   // Update attributes using $this->id
   public function fetch() {
     if($this->id) {
