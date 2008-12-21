@@ -87,5 +87,49 @@ class ViddlerVideo extends ViddlerBase {
     $result = $this->api->video_setdetails($data);
     print_r($result);
   }
+  
+  /*****************
+   DISPLAY FUNCTIONS
+   *****************/
+   
+  public function embed($options=array()) {
+    $default_options = array(
+        'type'   => 'player'
+      );
+    
+    $o = array_merge($default_options, $options);
+
+    // if no height or width set, set width to default
+    if(!isset($o['width']) && !isset($o['height'])) $o['width'] = 450;
+    
+    // auto size correctly
+    if(!isset($o['width'])) {
+      // scale width
+      $size_array = $this->autoSize($o['height'], $o['type'], 'height');
+      $o['width'] = $size_array['width'];
+    } elseif(!isset($o['height'])) {
+      // scale height
+      $size_array = $this->autoSize($o['width'], $o['type'], 'width');
+      $o['height'] = $size_array['height'];
+    }
+  }
+  
+  // axis is the defined axis
+  private function autoSize($size, $type='player', $axis='height') {
+    $ratio = $this->width/$this->height;
+    
+    if($axis == 'height') {
+      $height = $size;
+      $width  = floor($ratio*$height);
+    } else {
+      $width  = $size;
+      $height = floor($width/$ratio);
+    }
+    
+    if($type == 'player') $height += 42;
+    else $height += 21;
+    
+    return array('height' => $height, 'width' => $width);
+  }
 }
 ?>
