@@ -30,6 +30,14 @@ class ViddlerVideo extends ViddlerBase {
     return $user->videos();
   }
   
+  public static function findByTag($tag, $sessionid=false) {
+    $t = new ViddlerTag();
+    $t->name = $tag;
+    $t->sessionid = $sessionid;
+    
+    return $t->videos();
+  }
+  
   // Update attributes using $this->id
   public function fetch() {
     if($this->id) {
