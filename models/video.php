@@ -38,6 +38,21 @@ class ViddlerVideo extends ViddlerBase {
     return $t->videos();
   }
   
+  public static function featured($sessionid=null) {
+    $vb = new ViddlerBase();
+    $xml = $vb->api->videos_listfeatured();
+    $videos = array();
+    
+    foreach($xml['video_list']['video'] as $vid) {
+      $v = new ViddlerVideo();
+      $v->parseXML($vid);
+      $v->sessionid = $sessionid;
+      $videos[] = $v;
+    }
+    
+    return $videos;
+  }
+  
   // Update attributes using $this->id
   public function fetch() {
     if($this->id) {
