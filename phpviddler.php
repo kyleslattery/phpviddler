@@ -456,7 +456,7 @@ ovie" value="http://www.viddler.com/'.$type.'/'.$videoid.'/" />';
 		curl_setopt ($curl_handle, CURLOPT_TIMEOUT, 0);
 		if ($postmethod == 'post') {
 			curl_setopt($curl_handle, CURLOPT_POST, 1);
-			curl_setopt($curl_handle, CURLOPT_POSTFIELDS, $args);
+      curl_setopt($curl_handle, CURLOPT_POSTFIELDS, $args);
 		}
 		$response = curl_exec($curl_handle);
 		

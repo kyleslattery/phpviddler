@@ -1,12 +1,10 @@
 <?php
-include_once('../phpviddler.php');
 
 class ViddlerVideo extends ViddlerBase {
-  // attributes
-  var $author, $id, $title, $length_seconds, $width, $height,
-      $description, $view_count, $upload_time, $comment_count,
-      $tags, $url, $thumbnail_url, $permalink, $update_time,
-      $permissions, $comments;
+  public static $attributes = array('author', 'id', 'title', 'length_seconds', 'width', 'height',
+                                    'description', 'view_count', 'upload_time', 'comment_count',
+                                    'tags', 'url', 'thumbnail_url', 'permalink', 'update_time',
+                                    'permissions', 'comments');
   
   /**************
    DATA FUNCTIONS
@@ -14,9 +12,12 @@ class ViddlerVideo extends ViddlerBase {
    
   // Find a video given an id
   // returns ViddlerVideo object
-  public static function find($id) {
+  public static function find($id, $sessionid=false) {
     $video = new ViddlerVideo();
     $video->id = $id;
+    
+    if($sessionid) $video->sessionid = $sessionid;
+    
     $video->fetch();
     return $video;
   }
@@ -24,7 +25,7 @@ class ViddlerVideo extends ViddlerBase {
   // Update attributes using $this->id
   public function fetch() {
     if($this->id) {
-      $xml = $this->api->video_details($this->id);
+      $xml = $this->api->video_details($this->id, $this->sessionid);
       $this->parseXml($xml);
     }
   }
@@ -33,12 +34,22 @@ class ViddlerVideo extends ViddlerBase {
   public function parseXml($xml) {
     // TODO: Fill in comments, permission, etc.
     foreach($xml['video'] as $key => $value) {
-      if(!is_array($value)) {
+      if(!is_array($value) && in_array($key, ViddlerVideo::$attributes)) {
         $this->{$key} = $value;
       }
     }
   }
-}
+  
+  public function save() {
+    if(!$this->sessionid) throw("You need a sessionid to do that!");
 
-$vid = ViddlerVideo::find('202b6dc5');
+    $data = array();
+    foreach(ViddlerVideo::$attributes as $attr) {
+      if(isset($this->{$attr})) $data[$attr] = $this->{$attr};
+    }
+    
+    $result = $this->api->video_setdetails($data);
+    print_r($result);
+  }
+}
 ?>
