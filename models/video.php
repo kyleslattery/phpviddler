@@ -17,12 +17,12 @@ class ViddlerVideo extends ViddlerBase {
   public static function find($id) {
     $video = new ViddlerVideo();
     $video->id = $id;
-    $video->update();
+    $video->fetch();
     return $video;
   }
   
   // Update attributes using $this->id
-  public function update() {
+  public function fetch() {
     if($this->id) {
       $xml = $this->api->video_details($this->id);
       $this->parseXml($xml);
