@@ -47,6 +47,8 @@ class ViddlerVideo extends ViddlerBase {
     foreach(ViddlerVideo::$attributes as $attr) {
       if(isset($this->{$attr})) $data[$attr] = $this->{$attr};
     }
+    $data['video_id'] = $this->id;
+    $data['sessionid'] = $this->sessionid;
     
     $result = $this->api->video_setdetails($data);
     print_r($result);
