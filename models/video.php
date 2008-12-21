@@ -22,10 +22,15 @@ class ViddlerVideo extends ViddlerBase {
     }
   }
   
-  public static function parseXml($xml) {
-    print_r($xml);
+  public function parseXml($xml) {
+    // TODO: Fill in comments, permission, etc.
+    foreach($xml['video'] as $key => $value) {
+      if(!is_array($value)) {
+        $this->{$key} = $value;
+      }
+    }
   }
 }
 
-ViddlerVideo::find('202b6dc5');
+$vid = ViddlerVideo::find('202b6dc5');
 ?>
