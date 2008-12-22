@@ -136,7 +136,7 @@ class Phpviddler {
 		
 		$token = $this->sendRequest('viddler.videos.getRecordToken','sessionid='.$sessionid);
 		
-		if ($token['error']) {
+		if (isset($token['error'])) {
 			return $token['error']['description'];
 		} else {
 			return $token['record_token'];

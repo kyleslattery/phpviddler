@@ -143,5 +143,16 @@ EOC;
     
     return array('height' => $height, 'width' => $width);
   }
+  
+  public static function recordEmbed($token=null, $sessionid=null) {
+    $v = new ViddlerVideo();
+    
+    if(!$token) {
+      $v->sessionid = $sessionid;
+      $token = $v->api->video_getrecordtoken($sessionid);
+    }
+    
+    return $v->api->video_getRecordEmbed($token);
+  }
 }
 ?>
